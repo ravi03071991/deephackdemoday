@@ -28,3 +28,5 @@ vector_index.save_to_disk('./simple_vector_index.json')
 
 vector_index = GPTSimpleVectorIndex.load_from_disk(
     './simple_vector_index.json')
+
+# test
