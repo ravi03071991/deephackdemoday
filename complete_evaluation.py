@@ -30,18 +30,21 @@ vector_index.save_to_disk('./simple_vector_index.json')
 vector_index = GPTSimpleVectorIndex.load_from_disk(
     './simple_vector_index.json')
 
-# Evaluation
-def evaluate_response(query: str, index, mode: str) -> str:
-    response = index.query(query)
-    evaluator = ResponseEvaluator(mode=mode, service_context=service_context_gpt3)
-    evaluation = evaluator.evaluate(response)
-    return evaluation
+# Sample query to test the evaluation
+query = "How many continents are there in the world?"
 
-query_str = "your query here"
-mode = "context_response"  # Choose the evaluation mode ("context_response" is the only available mode)
+tree_response = tree_index.query(query)
+vector_response = vector_index.query(query)
 
-evaluation_result = evaluate_response(query_str, vector_index, mode)
-print(f"Evaluation: {evaluation_result}")
+# Instantiate the ResponseEvaluator
+evaluator = ResponseEvaluator(service_context=service_context_gpt3)
+
+# Evaluate the responses
+evaluation_tree_response = evaluator.evaluate(tree_response)
+evaluation_vector_response = evaluator.evaluate(vector_response)
+
+print(f"Tree Response Evaluation: {evaluation_tree_response}")
+print(f"Vector Response Evaluation: {evaluation_vector_response}")
 ```
 
-In the code above, we import the necessary modules and initialize the GPT-3 predictor, load the data and gpt/index files, and create a helper function `evaluate_response` to perform the evaluation on a given query. The function takes a query string, an index (e.g., vector_index), and an evaluation mode as input and returns the evaluation result.
+This is the complete evaluation code using the provided gpt-index/llama-index code base and documentation. It includes loading the GPTTreeIndex and GPTSimpleVectorIndex, running a query on each, and evaluating the responses using the provided ResponseEvaluator from the gpt_index.evaluation module. Make sure to replace the `query` variable with your desired query.
